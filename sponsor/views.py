@@ -1,5 +1,4 @@
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView 
-from rest_framework.pagination import PageNumberPagination
 
 from .serializers import SponsorListSerializer, RetrieveSponsorSerializer, UpdateSponsorSerializer
 from .models import Sponsor

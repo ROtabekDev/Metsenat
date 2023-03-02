@@ -25,6 +25,7 @@ class Student(models.Model):
     degree = models.CharField('Darajasi', choices=DEGREE, max_length=15)
     contract = models.IntegerField('Kontrakti')
     amont_of_money = models.IntegerField('Ajratilgan pul miqdori', blank=True, null=True, default=0)
+    created_at = models.DateTimeField('Yaratilgan vaqti', auto_now_add=True)
 
 
     def __str__(self):

@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.db.models import Sum
 
 from student.models import Student
+from sponsor.models import Sponsor
 
 from .serializers import (
     SerializerForLegalEntity, 
@@ -37,6 +38,16 @@ class Dashboard(APIView):
 
     def get(self, request, *args, **kwargs):
         
+        date = timezone.now()
+        year = date.year
+
+        sponsor_all = {}
+        student_all = {}
+
+        for i in range(1,13):
+            sponsor_all[i] = Sponsor.objects.filter(created_at__year=year, created_at__month=i).count()
+            student_all[i] = Student.objects.filter(created_at__year=year, created_at__month=i).count()
+        
         amont_of_money_sum = Student.objects.aggregate(Sum('amont_of_money'))['amont_of_money__sum']
         contract_sum = Student.objects.aggregate(Sum('contract'))['contract__sum']
         other = contract_sum - amont_of_money_sum
@@ -44,7 +55,11 @@ class Dashboard(APIView):
         data = {
             'Jami to`langan summa:': amont_of_money_sum,
             'Jami so`ralgan summa:': contract_sum,
-            'To`lanishi kerak bo`lgan summa:': other
+            'To`lanishi kerak bo`lgan summa:': other,
+            
+            'Sponsors': sponsor_all,
+            'Student': student_all
+
         }
  
         return Response(data=data)
